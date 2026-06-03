@@ -18,23 +18,23 @@ import {
 
 const router = express.Router();
 const upload = multer();
-router.get("/",  getAllPinjam);
+router.get("/", authenticateToken, getAllPinjam);
 
-router.get("/dipinjam/:nim", getBukuDipinjamByNim);
+router.get("/dipinjam/:nim", authenticateToken, getBukuDipinjamByNim);
 
-router.get("/detail/:id",  getDetailPinjam);
+router.get("/detail/:id", authenticateToken, getDetailPinjam);
 
 // Route untuk laporan pengembalian buku (semua / by NIM)
-router.get("/laporan-pengembalian",  getLaporanPengembalian);
-router.get("/laporan-pengembalian/:nim", getLaporanPengembalian);
+router.get("/laporan-pengembalian", authenticateToken, getLaporanPengembalian);
+router.get("/laporan-pengembalian/:nim", authenticateToken, getLaporanPengembalian);
 
-router.post("/", upload.none(), insertPinjam);
+router.post("/", upload.none(), authenticateToken, insertPinjam);
 
-router.patch("/:id", upload.none(),  updatePinjam);
+router.patch("/:id", upload.none(), authenticateToken, updatePinjam);
 
-router.delete("/:id", deletePinjam);
+router.delete("/:id", authenticateToken, deletePinjam);
 
 // Route untuk pengembalian buku (Gabungan array dan kembalikan semua)
-router.post("/kembali", upload.none(), kembalikanBuku);
+router.post("/kembali", upload.none(), authenticateToken, kembalikanBuku);
 
 export default router;

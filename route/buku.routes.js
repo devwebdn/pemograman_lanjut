@@ -14,12 +14,10 @@ import {
 const router = express.Router();
 const upload = multer();
 
-
-router.get("/",getAllProducts);
-router.post("/", upload.none(), tambahbukubaru);
-router.get("/:id",  cariBukuByID);
-
-router.patch("/:id", updateBuku);
-router.delete("/:id", deleteBuku);
+router.get("/",authenticateToken, getAllProducts);
+router.post("/", upload.none(), authenticateToken, tambahbukubaru);
+router.get("/:id", authenticateToken, cariBukuByID);
+router.patch("/:id", authenticateToken, updateBuku);
+router.delete("/:id", authenticateToken, deleteBuku);
 
 export default router;
