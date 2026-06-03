@@ -15,10 +15,10 @@ import {
 const router = express.Router();
 const upload = multer();
 
-router.get("/", authenticateToken, getAllProducts);
-router.post("/", upload.none(), authenticateToken, tambahdatabaru);
-router.get("/:id", authenticateToken, carimahasiswaBynim);
-router.patch("/:id", authenticateToken, updatemahasiswa);
-router.delete("/:id", authenticateToken, deletemahasiswa);
+router.get("/", getAllProducts);
+router.post("/", upload.none(), tambahdatabaru);
+router.get("/:id", carimahasiswaBynim);
+router.patch("/:id", updatemahasiswa);
+router.delete("/:id", deletemahasiswa);
 
 export default router;

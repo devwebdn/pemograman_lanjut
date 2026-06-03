@@ -28,8 +28,8 @@ app.use("/api/pinjam", Pinjamroutes);
 //app.use("/api/detailpinjam", DetailPinjamroutes);
 app.use("/api/user", routerUser);
 try {
-  await db.authenticate();
-  console.log("Database OK");
+  await db.sync();
+  console.log("database synced");
 
   await db.sync({ alter: true });
   console.log("Semua tabel berhasil dibuat otomatis");

@@ -17,7 +17,6 @@ routerUser.post("/login", login);
 
 routerUser.get(
   "/dashboard",
-  authenticateToken,
   (req, res) => {
     res.send(
       "Welcome to Dashboard"

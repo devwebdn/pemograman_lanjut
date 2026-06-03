@@ -14,9 +14,11 @@ import {
 const router = express.Router();
 const upload = multer();
 
-router.get("/", getAllProducts);
+
+router.get("/",getAllProducts);
 router.post("/", upload.none(), tambahbukubaru);
-router.get("/:id", cariBukuByID);
+router.get("/:id",  cariBukuByID);
+
 router.patch("/:id", updateBuku);
 router.delete("/:id", deleteBuku);
 
