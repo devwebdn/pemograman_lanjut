@@ -141,23 +141,40 @@ export const updatePinjam = async (req, res) => {
 // 6. Hapus pinjam
 export const deletePinjam = async (req, res) => {
   try {
-    const deleted = await Pinjam.destroy({
-      where: { id: req.params.id },
-    });
+    const id = req.params.id;
 
-    if (deleted === 0) {
-      return res.status(404).json({
-        message: "Data pinjam tidak ditemukan",
-      });
+    // Cek apakah data pinjam ada
+    const pinjam = await Pinjam.findOne({ where: { id } });
+    if (!pinjam) {
+      return res.status(404).json({ message: "Data pinjam tidak ditemukan" });
     }
 
-    res.status(200).json({
-      message: "Data pinjam berhasil dihapus",
+    // Ambil semua detail pinjam yang masih berstatus dipinjam (status 1)
+    // agar stok buku dikembalikan sebelum dihapus
+    const detilMasihDipinjam = await DetilPinjam.findAll({
+      where: { pinjam_id: id, status: 1 }
     });
+
+    // Kembalikan stok buku untuk buku yang masih dipinjam
+    for (const detil of detilMasihDipinjam) {
+      const buku = await Buku.findByPk(detil.buku_id);
+      if (buku) {
+        await buku.update({ jumlah: buku.jumlah + detil.jml_pinjam });
+      }
+    }
+
+    // Hapus semua detail pinjam terlebih dahulu (hindari foreign key constraint)
+    await DetilPinjam.destroy({ where: { pinjam_id: id } });
+
+    // Hapus data pinjam
+    await Pinjam.destroy({ where: { id } });
+
+    res.status(200).json({ message: "Data pinjam berhasil dihapus" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // 10. Cari buku yang sedang dipinjam berdasarkan NIM
 

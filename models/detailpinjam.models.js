@@ -20,6 +20,7 @@ const DetailPinjam = db.define(
         model: "pinjams",
         key: "id",
       },
+      onDelete: "CASCADE",  // otomatis hapus detail saat pinjam induk dihapus
     },
     buku_id: {
       type: DataTypes.INTEGER,
@@ -59,12 +60,14 @@ const DetailPinjam = db.define(
 // RELASI KE PINJAM
 DetailPinjam.belongsTo(Pinjam, {
   foreignKey: "pinjam_id",
-  as: "Pinjam"
+  as: "Pinjam",
+  onDelete: "CASCADE"
 });
 
 Pinjam.hasMany(DetailPinjam, {
   foreignKey: "pinjam_id",
-  as: "detil_pinjams"
+  as: "detil_pinjams",
+  onDelete: "CASCADE"
 });
 
 // RELASI KE BUKU

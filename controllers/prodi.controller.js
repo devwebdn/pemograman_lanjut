@@ -34,11 +34,16 @@ export const cariprodibykode = async (req, res) => {
 
 export const updateprodi= async (req, res) => {
   try {
-    const products = await prodi.update(req.body, {
+    const updated = await prodi.update(req.body, {
       where: {
-        kode_prodi: req.params.id
+        kode_prodi: req.params.kode_prodi  // diperbaiki: sesuai nama param di route /:kode_prodi
       }
     });
+
+    if (updated[0] === 0) {
+      return res.status(404).json({ message: "Data prodi tidak ditemukan" });
+    }
+
     res.json({ "message": "data prodi berhasil update" });
   } catch (error) {
     res.json({ message: error.message });
